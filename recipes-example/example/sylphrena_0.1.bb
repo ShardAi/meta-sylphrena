@@ -6,9 +6,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 PR = "r001"
 
 SRC_URI = "			\	
-	file://syl_core.cpp	\
-	file://syl_core.h	\
-	file://main.cpp	\
+	file://syl_core/syl_core.cpp	\
+	file://syl_core/syl_core.h	\
+	file://syl_core/main.cpp	\
    	file://init_syl.sh 	\
 	"
 
