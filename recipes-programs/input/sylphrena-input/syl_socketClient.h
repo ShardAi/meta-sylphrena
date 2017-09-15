@@ -1,3 +1,10 @@
+/*!
+ * Sylphrena AI input program - https://github.com/ShardAi
+ * Version - 1.0.0.0
+ *
+ * Copyright (c) 2017 Eirik Skjeggestad Dale
+ */
+
 #ifndef SYLSOCKETCLIENT_H
 #define SYLSOCKETCLIENT_H
 
@@ -23,14 +30,18 @@ public:
 	explicit sylSocketClient();
 	~sylSocketClient();
     bool isConnected() { return connected; }
+    void connectToServer();
 private:
     bool connected;
     int client;
-    int server;
+    //int server;
     int portNum;
     struct sockaddr_in server_addr;
-    socklen_t size;
+    //socklen_t size;
     int bufSize;
+    char* ip;
+
+    void readyReadAndWrite();
 
     //void listenForClients();
     //void listenToClient();

@@ -1,3 +1,10 @@
+/*!
+ * Sylphrena AI core program - https://github.com/ShardAi
+ * Version - 1.0.0.0
+ *
+ * Copyright (c) 2017 Eirik Skjeggestad Dale
+ */
+
 #ifndef SYLSOCKETSERVER_H
 #define SYLSOCKETSERVER_H
 
@@ -31,6 +38,7 @@ private:
     socklen_t size;
     int bufSize;
 
+    void connect();
     void listenForClients();
     void listenToClient();
     void messageReceived(const char* msg);

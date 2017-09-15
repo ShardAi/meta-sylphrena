@@ -1,3 +1,10 @@
+/*!
+ * Sylphrena AI core program - https://github.com/ShardAi
+ * Version - 1.0.0.0
+ *
+ * Copyright (c) 2017 Eirik Skjeggestad Dale
+ */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -8,6 +15,7 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
+#include <thread>
 #include "syl_core.h"
 
 using namespace std;
@@ -17,6 +25,11 @@ using namespace std;
 void process()
 {
 	syslog(LOG_NOTICE, "Writing to Sylphrenas Syslog");
+}
+
+void initSyl(sylCore core)
+{
+    core.start();
 }
 
 int main(int argc, char *argv[])
@@ -57,6 +70,7 @@ int main(int argc, char *argv[])
 	close(STDERR_FILENO);
 
 	sylCore *core = new sylCore();
+    thread first(initSyl, core);
 
 	//----------------
 	//Main Process
@@ -66,6 +80,8 @@ int main(int argc, char *argv[])
 		process();    //Run our Process
 		sleep(60);    //Sleep for 60 seconds
 	}
+
+    first.join();
 
 	delete core;
 

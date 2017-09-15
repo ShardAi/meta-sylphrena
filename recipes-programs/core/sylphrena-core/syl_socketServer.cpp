@@ -1,3 +1,10 @@
+/*!
+ * Sylphrena AI core program - https://github.com/ShardAi
+ * Version - 1.0.0.0
+ *
+ * Copyright (c) 2017 Eirik Skjeggestad Dale
+ */
+
 #include "syl_socketServer.h"
 
 sylSocketServer::sylSocketServer()
@@ -6,6 +13,24 @@ sylSocketServer::sylSocketServer()
     connected = false;
     bufSize = 1024;
 
+    while(true)
+    {
+        connect();
+        if(!connected)
+            sleep(60);
+    }
+}
+
+sylSocketServer::~sylSocketServer()
+{
+    if(server >= 0)
+        close(server);
+    if(client >= 0)
+        close(client);
+}
+
+void sylSocketServer::connect()
+{
 
     //init socket
     client = socket(AF_INET, SOCK_STREAM, 0);
@@ -31,21 +56,9 @@ sylSocketServer::sylSocketServer()
 
     size = sizeof(server_addr);
 
-    while(true)
-    {
-        listenForClients();
-        if(!connected)
-            sleep(60);
-    }
-    close(client);
-}
+    listenForClients();
 
-sylSocketServer::~sylSocketServer()
-{
-    if(server >= 0)
-        close(server);
-    if(client >= 0)
-        close(client);
+    close(client);
 }
 
 void sylSocketServer::listenForClients()
@@ -84,14 +97,19 @@ void sylSocketServer::listenToClient()
         //Client:
         do
         {
-            recv(server, buffer, bufSize, 0);
-            messageReceived(buffer);
-            if(*buffer == '#')
+            const char *msg = "Message received: ";
+            do
             {
-                *buffer = '*';
-                isExit = true;
-            }
-        } while(*buffer != '*');
+                recv(server, buffer, bufSize, 0);
+                strcat(msg, buffer);
+                if(*buffer == '#')
+                {
+                    *buffer = '*';
+                    isExit = true;
+                }
+            } while(*buffer != '*');
+            messageReceived(msg);
+        } while(!isExit)
 
         close(server);
         connected = false;
@@ -100,6 +118,7 @@ void sylSocketServer::listenToClient()
 
 void messageReceived(const char *msg)
 {
+    send(server, msg, bufSize, 0);
     syslog(LOG_INFO, "sys_socketServer: Message received:" + msg);
 }
 
