@@ -65,7 +65,7 @@ void sylSocketClient::readyReadAndWrite()
                 *buffer = '*';
                 isExit = true;
             }
-        } while(*buffer != 42);
+        } while(*buffer != '*');
 
         cout << "\nServer: ";
         do
@@ -77,6 +77,6 @@ void sylSocketClient::readyReadAndWrite()
                 *buffer = '*';
                 isExit = true;
             }
-        }while(*buffer != 42);
+        }while(*buffer != '*');
     } while(!isExit);
 }

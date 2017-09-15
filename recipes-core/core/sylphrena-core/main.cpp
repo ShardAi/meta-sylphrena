@@ -27,9 +27,9 @@ void process()
 	syslog(LOG_NOTICE, "Writing to Sylphrenas Syslog");
 }
 
-void initSyl(sylCore core)
+void initSyl(sylCore *core)
 {
-    core.start();
+    core->start();
 }
 
 int main(int argc, char *argv[])

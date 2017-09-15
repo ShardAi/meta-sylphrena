@@ -1,5 +1,5 @@
 SUMMARY = "Sylphrena core application"
-SECTION = "core"
+SECTION = "sylphrena-core"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
@@ -17,7 +17,7 @@ SRC_URI = "			\
 S = "${WORKDIR}"
 
 do_compile() {
-	     ${CXX} -std=c++11 main.cpp syl_core.cpp syl_core.h syl_socketServer.h syl_socketServer.cpp -o syl_core
+	     ${CXX} -std=c++11 -pthread main.cpp syl_core.cpp syl_core.h syl_socketServer.h syl_socketServer.cpp -o syl_core
 }
 
 do_install() {

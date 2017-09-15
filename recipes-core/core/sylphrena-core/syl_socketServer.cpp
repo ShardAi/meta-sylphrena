@@ -45,7 +45,7 @@ void sylSocketServer::connect()
     connected = true;
 
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = htons(INADDER_ANY);
+    server_addr.sin_addr.s_addr = htons(INADDR_ANY);
     server_addr.sin_port = htons(portNum);
 
     if(bind(client, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0)
@@ -89,7 +89,7 @@ void sylSocketServer::listenToClient()
     while(server > 0)
     {
         strcpy(buffer, "Server connected...\n");
-        send(server, buffer, bufSize);
+        send(server, buffer, bufSize, 0);
 
         //Connected with client
         //Enter # to end the connection
@@ -97,7 +97,7 @@ void sylSocketServer::listenToClient()
         //Client:
         do
         {
-            const char *msg = "Message received: ";
+            char msg[bufSize] = "Message received: ";
             do
             {
                 recv(server, buffer, bufSize, 0);
@@ -109,16 +109,16 @@ void sylSocketServer::listenToClient()
                 }
             } while(*buffer != '*');
             messageReceived(msg);
-        } while(!isExit)
+        } while(!isExit);
 
         close(server);
         connected = false;
     }
 }
 
-void messageReceived(const char *msg)
+void sylSocketServer::messageReceived(const char *msg)
 {
     send(server, msg, bufSize, 0);
-    syslog(LOG_INFO, "sys_socketServer: Message received:" + msg);
+    syslog(LOG_INFO, msg);
 }
 
