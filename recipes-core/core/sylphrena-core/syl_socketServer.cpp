@@ -17,7 +17,7 @@ sylSocketServer::sylSocketServer()
     {
         connect();
         if(!connected)
-            sleep(60);
+            sleep(1);
     }
 }
 
@@ -31,7 +31,6 @@ sylSocketServer::~sylSocketServer()
 
 void sylSocketServer::connect()
 {
-
     //init socket
     client = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -86,28 +85,30 @@ void sylSocketServer::listenToClient()
     char buffer[bufSize];
     bool isExit = false;
 
-    while(server > 0)
+    while(!isExit)//(server > 0)
     {
         strcpy(buffer, "Server connected...\n");
         send(server, buffer, bufSize, 0);
 
         //Connected with client
         //Enter # to end the connection
-
         //Client:
         do
         {
-            char msg[bufSize] = "Message received: ";
+            char msg[bufSize];
+            strcpy(msg, "Message received: ");
             do
             {
                 recv(server, buffer, bufSize, 0);
                 strcat(msg, buffer);
+                strcat(msg, " ");
                 if(*buffer == '#')
                 {
                     *buffer = '*';
                     isExit = true;
                 }
             } while(*buffer != '*');
+            strcat(msg, "\n");
             messageReceived(msg);
         } while(!isExit);
 
@@ -119,6 +120,7 @@ void sylSocketServer::listenToClient()
 void sylSocketServer::messageReceived(const char *msg)
 {
     send(server, msg, bufSize, 0);
+    //TODO: interpret msg.
     syslog(LOG_INFO, msg);
 }
 

@@ -49,7 +49,8 @@ void sylSocketClient::readyReadAndWrite()
 
     cout << "--- Awaiting confirmation from server...." << endl;
     recv(client, buffer, bufSize, 0);
-    cout << "--- Connection confirmed. You can now type the message you want to send. Send message by adding \* ????" << endl;
+    cout << "--- Connection confirmed by message: " << buffer << endl;
+    cout << "--- You can now type the message you want to send. Send message by adding \* at the end." << endl;
     cout << "--- Enter # to end the connection and exit this program." << endl;
 
     do
@@ -67,16 +68,14 @@ void sylSocketClient::readyReadAndWrite()
             }
         } while(*buffer != '*');
 
-        cout << "\nServer: ";
-        do
+        cout << "Server: ";
+        recv(client, buffer, bufSize, 0);
+        cout << buffer << " ";
+        if(*buffer == '#')
         {
-            recv(client, buffer, bufSize, 0);
-            cout << buffer << " ";
-            if(*buffer == '#')
-            {
-                *buffer = '*';
-                isExit = true;
-            }
-        }while(*buffer != '*');
+            *buffer = '*';
+            isExit = true;
+        }
+        cout << endl;
     } while(!isExit);
 }
