@@ -11,9 +11,15 @@
 #include <stdlib.h>
 #include <iostream>
 #include <syslog.h>
+#include <vector>
+#include <sstream>
+#include <iterator>
 #include "syl_socketServer.h"
+#include "syl_lib.h"
 
 using namespace std;
+
+class sylSocketServer;
 
 class sylCore
 {
@@ -22,7 +28,8 @@ public:
 	~sylCore();
 
 	void counterMethod();
-	void start();
+	void startServer();
+	void msgReceived(string msg);
 
 private:
 	int counter;

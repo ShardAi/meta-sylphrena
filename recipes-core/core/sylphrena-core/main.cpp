@@ -29,7 +29,7 @@ void process()
 
 void initSyl(sylCore *core)
 {
-    core->start();
+    core->startServer();
 }
 
 int main(int argc, char *argv[])
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
 	//Close Standard File Descriptors
 	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
+	//close(STDOUT_FILENO);
 	close(STDERR_FILENO);
 
 	sylCore *core = new sylCore();

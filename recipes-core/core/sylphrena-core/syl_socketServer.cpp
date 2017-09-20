@@ -7,8 +7,9 @@
 
 #include "syl_socketServer.h"
 
-sylSocketServer::sylSocketServer()
+sylSocketServer::sylSocketServer(sylCore *core)
 {
+    this->core = core;
     portNum = 1500;
     connected = false;
     bufSize = 1024;
@@ -96,7 +97,7 @@ void sylSocketServer::listenToClient()
         do
         {
             char msg[bufSize];
-            strcpy(msg, "Message received: ");
+            strcpy(msg, "");
             do
             {
                 recv(server, buffer, bufSize, 0);
@@ -108,7 +109,6 @@ void sylSocketServer::listenToClient()
                     isExit = true;
                 }
             } while(*buffer != '*');
-            strcat(msg, "\n");
             messageReceived(msg);
         } while(!isExit);
 
@@ -119,8 +119,13 @@ void sylSocketServer::listenToClient()
 
 void sylSocketServer::messageReceived(const char *msg)
 {
-    send(server, msg, bufSize, 0);
-    //TODO: interpret msg.
+    core->msgReceived(msg);
+
+    char reply[bufSize];
+    strcpy(reply, "Message received: ");
+    strcat(reply, msg);
+    strcat(reply, "\n");
+    send(server, reply, bufSize, 0);
     syslog(LOG_INFO, msg);
 }
 

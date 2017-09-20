@@ -17,19 +17,24 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <syslog.h>
+#include "syl_core.h"
 
 using namespace std;
 
 /*
 *This is a basic socket class setting up a server listening to a single client.
 */
+class sylCore;
+
 class sylSocketServer
 {
 public:
-	explicit sylSocketServer();
+	explicit sylSocketServer(sylCore *core);
+	explicit sylSocketServer() {}
 	~sylSocketServer();
     bool isConnected() { return connected; }
 private:
+    sylCore *core;
     bool connected;
     int client;
     int server;
