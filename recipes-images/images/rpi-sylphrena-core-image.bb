@@ -1,3 +1,3 @@
-require recipes-core/images/rpi-basic-image.bb
+require core-image-base
 
 IMAGE_INSTALL += "sylphrena-core"
