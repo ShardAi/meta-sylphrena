@@ -21,6 +21,14 @@ crate://crates.io/daemonize/0.3.0 \
 crate://crates.io/libc/0.2.42 \
 "
 
+FILES_${PN} += " \
+	/lib \
+	/lib/syl \
+	/lib/syl/res \
+        /lib/syl/res/training_text_long \
+        /lib/syl/res/training_text_short \
+"
+
 NATIVE_SYSTEMD_SUPPORT = "1"
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = "init_sylphrena_input.service"
@@ -37,4 +45,10 @@ do_install() {
 
              install -d ${D}${systemd_unitdir}/system/
              install -m 0644 ${WORKDIR}/git/sylphrena-init/init_sylphrena_input.service ${D}${systemd_unitdir}/system
+
+             install -d ${D}${base_libdir}/syl/res/
+             cp ${WORKDIR}/git/resources/training_text_long ${D}${base_libdir}/syl/res/
+             cp ${WORKDIR}/git/resources/training_text_short ${D}${base_libdir}/syl/res/
 }
+
+
